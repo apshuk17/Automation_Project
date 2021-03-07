@@ -44,6 +44,16 @@ function createinventory {
 	fi
 }
 
+function createcron {
+	filepath='/etc/cron.d/'
+	filename='automation'
+	fullpath="$filepath$filename"
+	if ! (( $(ls -l $filepath | grep -q $filename) )); then
+		echo 'Automation'
+		echo '* * * * * root /root/Automation_Project/automation.sh' > $fullpath
+	fi
+}
+
 
 function createlogs {
 	timestamp=$(date '+%d%m%Y-%H%M%S')
@@ -67,9 +77,12 @@ function serveronload {
 	# check status
 	checkstatus
 	# Create logs with timestamp
-	createlogs 
+	createlogs
+	# Create cron job
+	createcron 	
 }
 
 serveronload
+
 
 
